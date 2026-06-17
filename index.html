@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Feliz Cumpleaños Val</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Nunito:wght@300;400;600&display=swap"
+    rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box
+    }
+
+    html {
+      -webkit-text-size-adjust: 100%;
+      height: 100%
+    }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: #0D0A0B;
+      color: #F5F0EB;
+      /* FIX 1: overflow-x eliminado de body — causa que Chrome abandone el compositor de scroll */
+      overscroll-behavior: contain;
+      touch-action: pan-y;
+      height: 100%
+    }
+
+    /* FIX 1b: wrapper se encarga del overflow-x en lugar de body */
+    #page-wrapper {
+      overflow-x: hidden;
+      width: 100%;
+      position: relative;
+    }
+
+    @media (min-width: 601px) {
+      html { scroll-behavior: smooth }
+    }
+
+    .s {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      gap: 20px;
+      text-align: center;
+      padding: 40px 20px;
+      position: relative;
+      z-index: 2
+    }
+
+    .bg-dark { background: #0D0A0B }
+    .bg-wine { background: linear-gradient(170deg, #2A0E12, #4A1A22, #2A0E12) }
+    .bg-tandem { background: linear-gradient(170deg, #0A1628, #142744, #0A1628) }
+    .bg-movies { background: linear-gradient(170deg, #0D0A14, #1A1028, #0D0A14) }
+    .bg-distance { background: linear-gradient(170deg, #0A1A1A, #0F2B2B, #0A1A1A) }
+    .bg-future { background: linear-gradient(170deg, #1A1000, #2C2008, #1A1000) }
+    .bg-final { background: linear-gradient(170deg, #1A0D0F, #4A1A22 40%, #2A0E12) }
+
+    .bg-russia {
+      background:
+        linear-gradient(rgba(10, 15, 30, .72), rgba(10, 15, 30, .72)),
+        linear-gradient(to bottom, #FFFFFF 33.33%, #0039A6 33.33%, #0039A6 66.66%, #D52B1E 66.66%);
+    }
+
+    .bg-georgia {
+      position: relative;
+      background: url('georgia.svg') center center / cover no-repeat, #ffffff;
+    }
+    .bg-georgia::before { display: none }
+    .bg-georgia::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      background: rgba(15, 10, 10, .72);
+    }
+    .georgia-flag-svg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+    }
+    .georgia-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(15, 10, 10, .55);
+      z-index: 0;
+    }
+    .bg-georgia .georgia-inner {
+      position: relative;
+      z-index: 1
+    }
+
+    .bg-spain {
+      background:
+        linear-gradient(rgba(20, 10, 10, .65), rgba(20, 10, 10, .65)),
+        linear-gradient(to bottom, #AA151B 25%, #F1BF00 25%, #F1BF00 75%, #AA151B 75%);
+    }
+
+    .card {
+      background: rgba(255, 255, 255, .04);
+      /* FIX 3: backdrop-filter eliminado en móvil — muy costoso y causa jank en scroll */
+      border: 1px solid rgba(255, 255, 255, .06);
+      padding: 42px 28px;
+      border-radius: 20px;
+      max-width: 700px;
+      width: 100%;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, .3)
+    }
+    /* backdrop-filter en cards — OK en elementos estáticos, solo problemático en position:fixed */
+    .card {
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+    .card p {
+      font-size: 1.05rem;
+      line-height: 1.9;
+      font-weight: 300;
+      color: rgba(245, 240, 235, .85)
+    }
+
+    .serif { font-family: 'Cormorant Garamond', serif }
+    h1 { font-family: 'Cormorant Garamond', serif; font-weight: 300 }
+    .gold  { color: #C9A84C }
+    .blush { color: #E8C4B8 }
+    .wine-t { color: #D4727E }
+    .sage  { color: #8FB996 }
+    .lav   { color: #B8A9D4 }
+    .sky   { color: #7EB8D4 }
+    .peach { color: #D4A87E }
+
+    .sl {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: .8rem;
+      text-transform: uppercase;
+      letter-spacing: .3rem;
+      margin-bottom: .5rem;
+      opacity: .5
+    }
+    .st {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.8rem, 5vw, 2.8rem);
+      font-weight: 400;
+      line-height: 1.3;
+      margin-bottom: 1.2rem
+    }
+    .orn {
+      font-size: 1.5rem;
+      letter-spacing: .5rem;
+      opacity: .4;
+      margin-bottom: 1rem
+    }
+
+    .photo {
+      background: rgba(255, 255, 255, .05);
+      border: 1px solid rgba(255, 255, 255, .08);
+      padding: 14px;
+      border-radius: 18px;
+      width: 260px;
+      max-width: 85vw;
+      box-shadow: 0 15px 45px rgba(0, 0, 0, .4);
+      cursor: pointer;
+      transition: transform .4s, box-shadow .4s;
+      position: relative;
+      z-index: 2
+    }
+    .photo:hover { transform: scale(1.05); box-shadow: 0 20px 60px rgba(0,0,0,.5) }
+    .photo:active { transform: scale(1.02) }
+    .photo img, .photo video {
+      width: 100%;
+      border-radius: 12px;
+      margin-bottom: 10px;
+      display: block
+    }
+    .photo .ph {
+      width: 100%;
+      aspect-ratio: 3/4;
+      border-radius: 12px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: .85rem;
+      color: rgba(255,255,255,.25);
+      font-style: italic;
+      background: rgba(255,255,255,.03)
+    }
+    .photo p { font-weight: 600; font-size: .95rem }
+    .photo-w { width: 340px; max-width: 90vw }
+    .photo-w .ph { aspect-ratio: 16/10 }
+
+    .qb { max-width: 550px; padding: 0 20px }
+    .qb blockquote {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.5rem, 4.5vw, 2.4rem);
+      font-style: italic;
+      font-weight: 300;
+      line-height: 1.5
+    }
+
+    .map-v {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 1.5rem 0;
+      flex-wrap: wrap;
+      justify-content: center
+    }
+    .city { font-family: 'Cormorant Garamond', serif; font-size: 1.15rem; font-weight: 600 }
+    .dot-line { flex: 1; min-width: 20px; max-width: 60px; height: 1px; border-top: 2px dashed rgba(255,255,255,.15) }
+    .km {
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 30px;
+      padding: 5px 16px;
+      font-size: .75rem;
+      letter-spacing: .1rem;
+      color: rgba(255,255,255,.45);
+      white-space: nowrap
+    }
+
+    .big-age {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(7rem, 20vw, 14rem);
+      font-weight: 700;
+      color: #C9A84C;
+      line-height: 1;
+      text-shadow: 0 4px 40px rgba(201,168,76,.3)
+    }
+
+    .counter {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.1rem, 3vw, 1.5rem);
+      color: #C9A84C;
+      font-weight: 400;
+      margin-top: .8rem;
+      opacity: .7
+    }
+
+    /* FIX 2: will-change solo durante la animación, no permanente */
+    .rv {
+      opacity: 0;
+      transform: translateY(50px) scale(.95);
+      transition: opacity .9s cubic-bezier(.22,1,.36,1), transform .9s cubic-bezier(.22,1,.36,1);
+    }
+    .rvl {
+      opacity: 0;
+      transform: translateX(-60px) scale(.95);
+      transition: opacity .9s cubic-bezier(.22,1,.36,1), transform .9s cubic-bezier(.22,1,.36,1);
+    }
+    .rvr {
+      opacity: 0;
+      transform: translateX(60px) scale(.95);
+      transition: opacity .9s cubic-bezier(.22,1,.36,1), transform .9s cubic-bezier(.22,1,.36,1);
+    }
+    .rv.a, .rvl.a, .rvr.a {
+      opacity: 1;
+      transform: translate3d(0,0,0) scale(1)
+    }
+
+    .fh {
+      position: fixed;
+      top: 100vh;
+      pointer-events: none;
+      z-index: 1;
+      animation: fu 6s linear forwards;
+      opacity: .6
+    }
+    @keyframes fu {
+      0%   { transform: translateY(0) rotate(0); opacity: .6 }
+      100% { transform: translateY(-120vh) rotate(15deg); opacity: 0 }
+    }
+
+    .heart-canvas {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden
+    }
+    .bg-heart {
+      position: absolute;
+      opacity: 0;
+      animation: bgpulse var(--dur,8s) ease-in-out var(--delay,0s) infinite;
+      color: var(--col, rgba(201,168,76,.12));
+      font-size: var(--sz, 40px);
+      user-select: none
+    }
+    @keyframes bgpulse {
+      0%   { opacity: 0; transform: translateY(0) scale(.8) }
+      30%  { opacity: 1 }
+      70%  { opacity: .6 }
+      100% { opacity: 0; transform: translateY(-60px) scale(1.1) }
+    }
+
+    @keyframes hb {
+      0%,100% { transform: scale(1) }
+      15% { transform: scale(1.15) }
+      30% { transform: scale(1) }
+      45% { transform: scale(1.1) }
+    }
+    .hb { animation: hb 1.5s ease infinite; display: inline-block }
+
+    @keyframes gp {
+      0%,100% { opacity: .25 }
+      50% { opacity: .5 }
+    }
+    .glow {
+      position: absolute;
+      width: 350px; height: 350px;
+      border-radius: 50%;
+      filter: blur(100px);
+      animation: gp 5s ease infinite;
+      pointer-events: none;
+      z-index: 0
+    }
+
+    .sh {
+      position: absolute;
+      bottom: 28px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      font-size: .7rem;
+      letter-spacing: .2rem;
+      text-transform: uppercase;
+      opacity: .3
+    }
+    .sh .ln {
+      width: 1px; height: 32px;
+      background: currentColor;
+      animation: pu 2s ease infinite
+    }
+    @keyframes pu {
+      0%,100% { opacity: .3 }
+      50% { opacity: 1 }
+    }
+
+    .music-notice {
+      position: fixed;
+      top: 16px; right: 16px;
+      z-index: 100;
+      background: rgba(201,168,76,.15);
+      border: 1px solid rgba(201,168,76,.3);
+      border-radius: 30px;
+      padding: 8px 16px;
+      font-size: .75rem;
+      color: #C9A84C;
+      letter-spacing: .1rem;
+      /* FIX 4: translateZ(0) para promover a su propia capa y no interferir con scroll */
+      transform: translateZ(0);
+      -webkit-transform: translateZ(0);
+      opacity: 0;
+      transition: opacity .6s;
+      pointer-events: none
+    }
+    .music-notice.show { opacity: 1 }
+
+    .music-toggle {
+      position: fixed;
+      bottom: 20px; right: 20px;
+      z-index: 100;
+      width: 48px; height: 48px;
+      border-radius: 50%;
+      border: 1px solid rgba(201,168,76,.3);
+      background: rgba(13,10,11,.9);
+      /* FIX 3b: sin backdrop-filter en el botón fijo — muy problemático en Android */
+      color: #C9A84C;
+      font-size: 1.2rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 1;
+      transition: opacity .5s, transform .3s;
+      /* FIX 4: propia capa GPU */
+      transform: translateZ(0);
+      -webkit-transform: translateZ(0);
+    }
+    .music-toggle:active { transform: translateZ(0) scale(.9) }
+
+    .li-icon {
+      font-size: 1.2rem;
+      width: 36px; height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255,255,255,.04);
+      border-radius: 50%;
+      flex-shrink: 0
+    }
+
+    @media(max-width:600px) {
+      .s { padding: 32px 16px; gap: 16px }
+      .card { padding: 28px 20px; border-radius: 16px }
+      .card p { font-size: .97rem; line-height: 1.8 }
+      .photo { width: 220px; padding: 10px }
+      .photo-w { width: 260px }
+      .glow { width: 200px; height: 200px; filter: blur(70px) }
+      .big-age { font-size: clamp(6rem, 18vw, 10rem) }
+      .map-v { gap: 8px; flex-wrap: nowrap }
+      .city { font-size: 1rem }
+      .qb blockquote { font-size: clamp(1.3rem, 5vw, 2rem) }
+      .music-toggle { bottom: 14px; right: 14px; width: 42px; height: 42px; font-size: 1rem }
+      ul li { font-size: .93rem !important }
+    }
+    @media(max-width:360px) {
+      .s { padding: 24px 12px }
+      .card { padding: 22px 16px }
+      .photo { width: 200px }
+      .photo-w { width: 230px }
+      .st { font-size: clamp(1.5rem, 5vw, 2.2rem) }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="music-notice" id="musicNotice">♫ Zemfira</div>
+  <button class="music-toggle" id="musicToggle" aria-label="Toggle music">♫</button>
+  <audio id="bgMusic" loop preload="auto">
+    <source src="zemfira.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- FIX 1: wrapper para overflow-x en lugar de body -->
+  <div id="page-wrapper">
+
+  <!-- ═══════════ 1. HERO ═══════════ -->
+  <div class="s bg-dark">
+    <div class="glow" style="background:rgba(201,168,76,.15);top:20%;left:30%"></div>
+    <div class="glow" style="background:rgba(212,114,126,.08);top:60%;right:20%"></div>
+    <div class="heart-canvas" id="heroHearts"></div>
+    <div class="rv" style="text-align:center;position:relative;z-index:2">
+      <div class="orn gold">✦ ✦ ✦</div>
+      <h1 style="font-size:clamp(2.5rem,7vw,5rem);color:#F5F0EB">С Днём Рождения,<br><span class="gold" style="font-style:italic">Валерия</span></h1>
+      <div class="serif" style="font-size:1.3rem;color:#C9A84C;letter-spacing:.3rem;margin-top:.8rem;opacity:.7">26 · 06 · 2026</div>
+      <p style="margin-top:2rem;font-weight:300;max-width:400px;color:rgba(245,240,235,.55);line-height:1.8"></p>
+    </div>
+    <div class="sh"><span>Desliza</span><div class="ln"></div></div>
+  </div>
+
+  <!-- ═══════════ 2. INTRO ═══════════ -->
+  <div class="s bg-wine">
+    <div class="card rv">
+      <div class="st blush">Hoy 26 de junio cumples 23 años!</div>
+      <p>He preparado esta felicitación interactiva, <br>como regalo de cumpleaños</p>
+    </div>
+  </div>
+
+  <!-- ═══════════ 3. FOTO 1 ═══════════ -->
+  <div class="s bg-dark">
+    <div class="photo rvl" onclick="burst()">
+      <p class="blush">Todo empezó el 25 de julio de 2025...</p>
+    </div>
+  </div>
+
+  <!-- ═══════════ 4. CONTADOR ═══════════ -->
+  <div class="s bg-dark">
+    <div class="glow" style="background:rgba(126,184,212,.1);top:30%;left:20%"></div>
+    <div class="card rv">
+      <div class="st sky" id="counter"></div>
+    </div>
+  </div>
+
+  <div class="s bg-dark">
+    <div class="photo rvl" onclick="burst()">
+      <p class="blush">Aún sueño con tu bonito mensaje <br>"Todo bien con mi español"</p>
+    </div>
+  </div>
+
+  <!-- ═══════════ 5. FRASE ═══════════ -->
+  <div class="s bg-dark">
+    <div class="qb rv">
+      <div class="orn gold">✦</div>
+      <blockquote class="gold">Más cerca de lo que parece</blockquote>
+      <p style="margin-top:1.5rem;font-size:.95rem;color:rgba(245,240,235,.45);font-weight:300">Aunque prefiero esta frase</p>
+    </div>
+  </div>
+
+  <!-- ═══════════ 6. FOTO 2 ═══════════ -->
+  <div class="s bg-wine">
+    <div class="photo rvl" onclick="burst()">
+      <img src="child.jpg" alt="">
+      <p class="blush"> </p>
+    </div>
+  </div>
+
+  <!-- ═══════════ 7. EGOÍSTAS ═══════════ -->
+  <div class="s bg-movies">
+    <div class="glow" style="background:rgba(184,169,212,.1);top:35%;left:25%"></div>
+    <div class="card rv">
+      <div class="st lav">Egoístas</div>
+      <p>La palabra que mejor nos describe... (realmente no jeje) <br> Pero es gracioso que tengamos este mote no?</p>
+    </div>
+  </div>
+
+  <!-- ═══════════ 8. TOP 5 ═══════════ -->
+  <div class="s bg-wine">
+    <div class="card rv">
+      <div class="st gold">TOP 5 COSAS QUE MÁS ME GUSTAN HACER CONTIGO</div>
+      <ul style="list-style:none;text-align:left;margin-top:.5rem">
+        <li style="padding:13px 0;border-bottom:1px solid rgba(255,255,255,.05);display:flex;align-items:center;gap:14px;font-size:1rem;font-weight:300;color:rgba(245,240,235,.8)">
+          <span class="li-icon">♥</span>Conversaciones que empiezan con "no puedo hablar mucho" y duran horas
+        </li>
+        <li style="padding:13px 0;border-bottom:1px solid rgba(255,255,255,.05);display:flex;align-items:center;gap:14px;font-size:1rem;font-weight:300;color:rgba(245,240,235,.8)">
+          <span class="li-icon">♥</span>Ver películas juntos
+        </li>
+        <li style="padding:13px 0;border-bottom:1px solid rgba(255,255,255,.05);display:flex;align-items:center;gap:14px;font-size:1rem;font-weight:300;color:rgba(245,240,235,.8)">
+          <span class="li-icon">♥</span>Ganarte en el juego jeje
+        </li>
+        <li style="padding:13px 0;border-bottom:1px solid rgba(255,255,255,.05);display:flex;align-items:center;gap:14px;font-size:1rem;font-weight:300;color:rgba(245,240,235,.8)">
+          <span class="li-icon">♥</span>Que me hables de tus bonitas uñas
+        </li>
+        <li style="padding:13px 0;display:flex;align-items:center;gap:14px;font-size:1rem;font-weight:300;color:rgba(245,240,235,.8)">
+          <span class="li-icon">♥</span>Las miles de llamadas que hemos hecho
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ═══════════ 9. FOTO 3 ═══════════ -->
+  <div class="s bg-dark">
+    <div class="photo rvl" onclick="burst()">
+      <img src="flores.jpg" alt="">
+      <p class="gold">Foto top</p>
+    </div>
+  </div>
+
+  <!-- ═══════════ 10. TEXTO LARGO ═══════════ -->
+  <div class="s bg-distance">
+    <div class="card rv">
+      <div class="st sage">Тэкстако</div>
+      <p>После твоего такого красивого поздравления с днём рождения я уже не мог поздравить тебя обычным сообщением. Я надеюсь,
+        что у тебя будет счастливый день рождения и ты прекрасно проведёшь этот день со своей семьёй и подругами.
+        Сегодня мы уже можем сказать, что отпраздновали первый день рождения друг друга. Год назад мы ещё даже не были знакомы, а
+        сейчас я уже не могу представить, как жил всё это время, не зная тебя.<br><br>
+        Отвечая на твоё письмо, которое сейчас лежит рядом со мной, я уверен, что ты обязательно достигнешь всех целей, которые
+        написала. Даже если уже прошла половина года, это не значит, что мы должны были выполнить уже половину наших целей.
+        Поэтому не переживай — жизнь всегда должна быть с "low cortisol". А я всё это время буду рядом: поддерживать тебя,
+        слушать тебя, и когда ты приедешь в Испанию, я надеюсь, что мы вместе составим список наших общих целей.<br><br>
+        В том предыдущем огромном сообщении я говорил, что есть очень много вещей, которые мне в тебе нравятся. Я стараюсь
+        говорить тебе об этом время от времени, но хочу, чтобы это осталось и здесь: ты очень внимательная и сразу замечаешь,
+        когда что-то не так. Мне нравится, как ты интересуешься моими увлечениями. Твоё чувство юмора дарит мне комфорт, потому
+        что с тобой я могу шутить обо всём. Мне нравится, что ты всё помнишь. Мне очень нравится, насколько ты умная и смелая,
+        что ты не гордая и не из тех, кто просто довольствуется малым. Ты очень искренняя. Я люблю и твою более нежную,
+        чувствительную и ласковую сторону: твои зелёные глаза, твою улыбку, твои волосы и твои модельные руки.<br><br>
+        С каждым днём остаётся всё меньше времени до твоего приезда. Ты справляешься просто великолепно. Немногие могут сказать,
+        что добились того, чего добилась ты: языки, самостоятельная работа — всегда помни об этом и гордись собой. Спасибо тебе
+        за то, что мотивируешь меня становиться лучшей версией себя. То, что я чувствую к тебе, намного сильнее любой дистанции,
+        любых ссор и любых слов. Осталось совсем немного до того момента, когда мы сможем праздновать наши дни рождения вместе: ходить
+        куда-нибудь поесть, ездить в небольшие путешествия, ходить в кино. Мы наверстаем все планы, которые расстояние у нас забрало.
+        Валерия, никогда не меняйся, потому что твой характер излучает радость. С днём рождения, Val. Я тебя люблю.
+      </p>
+    </div>
+  </div>
+
+  <!-- ═══════════ 11. QUOTE ═══════════ -->
+  <div class="s bg-dark">
+    <div class="qb rv">
+      <blockquote class="gold">Recordatorio de que iremos al Everest</blockquote>
+      <p style="margin-top:1rem;font-size:.9rem;color:rgba(245,240,235,.35);font-weight:300">K2 después?</p>
+    </div>
+  </div>
+
+  <!-- ═══════════ 12. RUSIA ═══════════ -->
+  <div class="s bg-russia">
+    <div class="glow" style="background:rgba(143,185,150,.1);top:40%;right:25%"></div>
+    <div class="heart-canvas" id="distanceHearts"></div>
+    <div class="rv" style="text-align:center;max-width:500px;position:relative;z-index:2">
+      <div class="st sage">Расстояние</div>
+      <div class="map-v">
+        <span class="city sage">Барселона</span>
+        <div class="dot-line"></div>
+        <span class="km">5.077 km</span>
+        <div class="dot-line"></div>
+        <span class="city sage">Екатеринбург</span>
+      </div>
+      <p style="font-weight:300;color:rgba(245,240,235,.7);line-height:1.8;margin-top:1rem">Спасибо, что показываешь мне
+        все красивые, интересные и необычные вещи о России. Если бы меня спросили, что мне больше
+        всего нравится в России… я бы ответил: ты jeje</p>
+    </div>
+    <div class="photo rvl" onclick="burst()">
+      <img src="Moscu.jpg" alt="">
+      <p class="blush"> </p>
+    </div>
+  </div>
+
+  <!-- ═══════════ 13. GEORGIA ═══════════ -->
+  <div class="s bg-georgia">
+    <div class="georgia-inner rv" style="text-align:center;max-width:520px">
+      <div class="st" style="color:#F5F0EB">საქართველო</div>
+      <p style="font-weight:300;color:rgba(245,240,235,.88);line-height:1.85">ვიცი, რომ საქართველოში მოგზაურობამ ძალიან
+        გაგაბედნიერა და რომ ვერ მოასწარი ყველაფრის ნახვა, რაც გინდოდა... გთხოვ,
+        გახსოვდეს, რომ გყავს ბიჭი, რომელიც სიამოვნებით იქნება შენი მოგზაურობის თანამგზავრიც.</p>
+    </div>
+    <div class="photo rvl" onclick="burst()">
+      <img src="georgia.jpg" alt="">
+      <p class="blush"> </p>
+    </div>
+  </div>
+
+  <!-- ═══════════ 14. ESPAÑA ═══════════ -->
+  <div class="s bg-spain">
+    <div class="glow" style="background:rgba(201,168,76,.12);top:30%;left:25%"></div>
+    <div class="card rv">
+      <div class="st peach">El futuro</div>
+      <p>Solo tú y tu disciplina son las causantes de que puedas hablar español tan bien en tan poco tiempo.
+        Desde aquí puedo sentir el gran amor que tienes por el país y su cultura.
+        Estoy seguro que te adaptarás muy rápido y te encantará vivir aquí.</p>
+    </div>
+    <div class="photo rvl" onclick="burst()">
+      <img src="spain.jpg" alt="">
+      <p class="blush"> </p>
+    </div>
+  </div>
+
+  <!-- ═══════════ 15. FINAL ═══════════ -->
+  <div class="s bg-final">
+    <div class="glow" style="background:rgba(201,168,76,.15);top:30%;left:40%"></div>
+    <div class="heart-canvas" id="finalHearts"></div>
+    <div class="rv" style="text-align:center;position:relative;z-index:1">
+      <div class="big-age">23</div>
+      <h1 style="font-size:clamp(1.8rem,5vw,3rem);color:#F5F0EB;margin:.5rem 0 1rem">Feliz cumpleaños, Val</h1>
+      <p style="font-size:1.1rem;color:rgba(232,196,184,.8);font-weight:300;max-width:480px;line-height:1.8">Пусть этот
+        год принесёт тебе всё, что ты заслуживаешь. Надеюсь, что смогу обнять тебя очень скоро.</p>
+    </div>
+  </div>
+
+  </div><!-- /page-wrapper -->
+
+  <script>
+    // ── Scroll reveal ──
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          // FIX 2a: activar will-change JUSTO ANTES de animar
+          e.target.style.willChange = 'transform, opacity';
+          e.target.classList.add('a');
+          // FIX 2b: liberar will-change después de que termine la animación
+          e.target.addEventListener('transitionend', () => {
+            e.target.style.willChange = 'auto';
+          }, { once: true });
+        }
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.rv,.rvl,.rvr').forEach(el => obs.observe(el));
+
+    // ── Day counter ──
+    const start = new Date('2025-07-25');
+    const today = new Date();
+    const days = Math.floor((today - start) / (1000 * 60 * 60 * 24));
+    document.getElementById('counter').textContent = days + ' días desde que nos conocimos';
+
+    // ── Music ──
+    let musicStarted = false;
+    let musicPlaying = false;
+    const audio = document.getElementById('bgMusic');
+    const notice = document.getElementById('musicNotice');
+    const toggleBtn = document.getElementById('musicToggle');
+
+    function startMusic() {
+      if (musicStarted) return;
+      musicStarted = true;
+      audio.volume = 0;
+      audio.play().then(() => {
+        musicPlaying = true;
+        let v = 0;
+        const fade = setInterval(() => {
+          v = Math.min(v + 0.02, 0.45);
+          audio.volume = v;
+          if (v >= 0.45) clearInterval(fade);
+        }, 80);
+        notice.classList.add('show');
+        setTimeout(() => notice.classList.remove('show'), 3500);
+        toggleBtn.textContent = '♫';
+      }).catch(() => { musicStarted = false; });
+    }
+
+    document.addEventListener('touchstart', startMusic, { once: true });
+    window.addEventListener('scroll', startMusic, { once: true, passive: true });
+
+    toggleBtn.addEventListener('click', () => {
+      if (!musicStarted) { startMusic(); return; }
+      if (musicPlaying) {
+        audio.pause(); musicPlaying = false; toggleBtn.textContent = '✕';
+      } else {
+        audio.play(); musicPlaying = true; toggleBtn.textContent = '♫';
+      }
+    });
+
+    // ── Floating hearts ──
+    const heartColors = ['#C9A84C', '#D4727E', '#E8C4B8', '#B8A9D4', '#8FB996'];
+    function mkHeart(x) {
+      const h = document.createElement('div');
+      h.classList.add('fh');
+      h.textContent = ['♥','♥','♥','♡'][Math.floor(Math.random()*4)];
+      h.style.left = (x !== undefined ? x : Math.random()*100) + 'vw';
+      h.style.fontSize = (14 + Math.random()*20) + 'px';
+      h.style.color = heartColors[Math.floor(Math.random()*heartColors.length)];
+      document.body.appendChild(h);
+      setTimeout(() => h.remove(), 6500);
+    }
+
+    // FIX 5: throttle más agresivo en móvil para no saturar el hilo principal
+    let lastScroll = 0;
+    window.addEventListener('scroll', () => {
+      const now = Date.now();
+      if (now - lastScroll > 400) { mkHeart(); lastScroll = now; }
+    }, { passive: true });
+
+    function burst() {
+      for (let i = 0; i < 12; i++) setTimeout(() => mkHeart(), i * 60);
+    }
+
+    document.querySelectorAll('.photo').forEach(p => p.addEventListener('click', burst));
+
+    // ── BG ambient hearts ──
+    function makeBgHearts(containerId, count, colors) {
+      const c = document.getElementById(containerId);
+      if (!c) return;
+      for (let i = 0; i < count; i++) {
+        const h = document.createElement('div');
+        h.classList.add('bg-heart');
+        h.textContent = Math.random() > .5 ? '♥' : '♡';
+        h.style.setProperty('--dur', (6 + Math.random()*8) + 's');
+        h.style.setProperty('--delay', (Math.random()*6) + 's');
+        h.style.setProperty('--col', colors[Math.floor(Math.random()*colors.length)]);
+        h.style.setProperty('--sz', (20 + Math.random()*50) + 'px');
+        h.style.left = (Math.random()*90) + '%';
+        h.style.top  = (Math.random()*80) + '%';
+        c.appendChild(h);
+      }
+    }
+
+    makeBgHearts('heroHearts',     18, ['rgba(201,168,76,.1)','rgba(212,114,126,.08)','rgba(232,196,184,.07)']);
+    makeBgHearts('distanceHearts', 14, ['rgba(143,185,150,.1)','rgba(126,184,212,.08)','rgba(245,240,235,.05)']);
+    makeBgHearts('finalHearts',    22, ['rgba(201,168,76,.12)','rgba(212,114,126,.1)','rgba(232,196,184,.08)']);
+  </script>
+
+</body>
+</html>
